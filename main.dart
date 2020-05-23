@@ -1,115 +1,167 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  runApp(_baikiemtra());
+}
 
-class MyApp extends StatelessWidget {
-  @override            
-  Widget build(BuildContext context) {  
-    Widget titleSection = Container(
-      padding: const EdgeInsets.all(32),
-      child: Row(
-        children: [
-          Expanded(
-            /*1*/
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /*2*/
-                Container(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    'Oeschinen Lake Campground',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Text(
-                  'Kandersteg, Switzerland',
-                  style: TextStyle(
-                    color: Colors.grey[500],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          /*3*/
-          Icon(
-            Icons.star,
-            color: Colors.red[500],
-          ),
-          Text('41'),
-        ],
-      ),
-    );
+class _baikiemtra extends StatefulWidget {
+  @override
+  __baikiemtraState createState() => __baikiemtraState();
+}
 
-    Color color = Theme.of(context).primaryColor;
-
-    Widget buttonSection = Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildButtonColumn(color, Icons.call, 'CALL'),
-          _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
-          _buildButtonColumn(color, Icons.share, 'SHARE'),
-        ],
-      ),
-    );
-
-    Widget textSection = Container(
-      padding: const EdgeInsets.all(32),
-      child: Text(
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-            'Alps. Situated 1,578 meters above sea level, it is one of the '
-            'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-            'half-hour walk through pastures and pine forest, leads you to the '
-            'lake, which warms to 20 degrees Celsius in the summer. Activities '
-            'enjoyed here include rowing, and riding the summer toboggan run.',
-        softWrap: true,
-      ),
-    );
-
+class __baikiemtraState extends State<_baikiemtra> {
+  int _count = 0;
+  int _red = 0;
+  int _green = 0;
+  int _blue = 0;
+  double _turn = 0;
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,            
-      title: 'Flutter layout demo',            
-      home: Scaffold(            
-        appBar: AppBar(            
-        title: Text('Flutter layout demo'),            
-      ),            
-      body: ListView(           
-        children: [
-          Image.asset(
-            'lib/images/hoa.jpg',
-            width: 600,
-            height: 240,
-            fit: BoxFit.cover,
-          ),
-          titleSection,
-          buttonSection,
-          textSection,
-        ],
-      ),
-      ),
-    );
-  }
-  Column _buildButtonColumn(Color color, IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: color),
-        Container(
-          margin: const EdgeInsets.only(top: 8),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: color,
-            ),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            'Stacked Architecture Demo',
+            textScaleFactor: 1.1,
           ),
         ),
-      ],
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(top: 80),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          width: 80,
+                          height: 80,
+                          color: Color.fromRGBO(_red, 0, 0, 1),
+                        ),
+                        Container(
+                          width: 80,
+                          height: 80,
+                          color: Color.fromRGBO(0, _green, 0, 1),
+                          // color: Color.fromRGBO(r, g, b, opacity),
+                        ),
+                        Container(
+                          width: 80,
+                          height: 80,
+                         color: Color.fromRGBO(0, 0, _blue, 1),
+                        ),
+                      ],
+                    ),
+                    Slider(
+                      value: _red.toDouble(),
+                      min: 0,
+                      max: 255,
+                      divisions: 255,
+                      onChanged: (_redOpacity) {
+                        setState(() {
+                          _red = _redOpacity.toInt();
+                          print(_redOpacity);
+                          print(_red);
+                        });
+                      },
+                    ),
+                    Slider(
+                      value: _green.toDouble(),
+                      min: 0,
+                      max: 255,
+                      divisions: 255,
+                      onChanged: (_greenOpacity) {
+                        setState(() {
+                          _green = _greenOpacity.toInt();
+                          print(_greenOpacity);
+                          print(_green);
+                        });
+                      },
+                    ),
+                       Slider(
+                      value: _blue.toDouble(),
+                      min: 0,
+                      max: 255,
+                      divisions: 255,
+                      onChanged: (_blueOpacity) {
+                        setState(() {
+                          _blue = _blueOpacity.toInt();
+                          print(_blueOpacity);
+                          print(_blue);
+                        });
+                      },
+                    ),
+                    RotationTransition(
+                      turns: AlwaysStoppedAnimation(_turn / 360),
+                      alignment: FractionalOffset.center,
+                      child: Center(
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          color: Color.fromRGBO(_red.round(), _green.round(),_blue.round(),1),
+                          child: Text(
+                        'Loren Ipsum',
+                        textScaleFactor: 2,
+                      )),),
+                    ),
+                    Slider(
+                      value: _turn,
+                      min: 0,
+                      max: 360,
+                      divisions:360,
+                      //label: '$_turn',
+                      label: _turn.toInt().toString(),
+                      onChanged: (_turntrigged){
+                        setState(() {
+                          _turn = _turntrigged;
+                        });
+                      },
+
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Text('You pressed $_count turn !'),
+                    )
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(left: 20),
+                    child: FlatButton(
+                      color: Colors.grey[400],
+                      child: Text('Reset'),
+                      onPressed: () {
+                        setState(() {
+                          _count = 0;
+                        });
+                      },
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: FloatingActionButton(
+                      child: Icon(Icons.add),
+                      onPressed: () {
+                        setState(() {
+                          _count++;
+                          print(_count);
+                        });
+                      },
+                    ),
+                    padding: EdgeInsets.only(bottom: 10, right: 10),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
